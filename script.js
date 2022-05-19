@@ -1,22 +1,3 @@
-// captilizes the first letter of any word
-function captilize (word){
-    word = word.toLowerCase();
-    word = word.replace(word[0], word[0].toUpperCase());
-    return word;
-}
-
-function checkSpelling (word) {
-    word = word.toLowerCase();
-
-    if (word === 'rock' || word === 'paper' || word === 'scissors') {
-        return word;
-    }
-    else {
-        let newWord = prompt(`${word} is not a valid input. Please use: rock, paper, scissors`);
-        checkSpelling(newWord);
-    }
-}
-
 function computerPlay () {
     let pick = '';
 
@@ -37,24 +18,29 @@ function computerPlay () {
     return pick;
 }
 
+function getWord () {
+    let word = prompt('Please enter rock, paper, or scissors').toLowerCase();
+    while (word != "rock" && word != "paper" && word != "scissors") {
+        console.log(`${word} is an invalid input.`);
+        word = prompt('Please enter rock, paper, or scissors').toLowerCase();
+    }
 
-//uses a random number generator to pick for computer
-function playRound (playerSelection, computerSelection) {
-    let originalPlayer = captilize(playerSelection);
-    let originalComp = computerSelection;
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}
 
-    computerSelection = computerSelection.toLowerCase();
+function playRound (computerSelection) {
+    let playerSelection = getWord();
 
     if (playerSelection === computerSelection){
         console.log("Draw!")
         return 0;
     }
-    else if (playerSelection === 'rock' && computerSelection === 'paper' || playerSelection === 'paper' && computerSelection === 'scissors' || playerSelection === 'scissors' && computerSelection === 'rock'){
-        console.log(`You lose! ${originalComp} beats ${originalPlayer}`)
+    else if (playerSelection === 'Rock' && computerSelection === 'Paper' || playerSelection === 'Paper' && computerSelection === 'Scissors' || playerSelection === 'Scissors' && computerSelection === 'Rock'){
+        console.log(`You lose! ${computerSelection} beats ${playerSelection}`)
         return 1;
     } 
     else {
-        console.log(`You win! ${originalPlayer} beats ${originalComp}`)
+        console.log(`You win! ${playerSelection} beats ${computerSelection}`)
         return 2;
     }
 }
@@ -64,9 +50,7 @@ function game () {
     let computerScore = 0;
 
     for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt('Please enter a rock, paper, or scissors: ');
-
-        let currentWinner = playRound(checkSpelling(playerSelection), computerPlay());
+        let currentWinner = playRound(computerPlay());
         
         switch (currentWinner) {
             case 1:

@@ -8,7 +8,6 @@ const resultContainer = document.querySelector('.result-container');
 const resultDisplay = document.querySelector('.result-display');
 const buttons = document.querySelectorAll('.button-container');
 
-let roundCounter = 0;
 let playerScore = 0;
 let computerScore = 0;
 let resetButtonPresent = false;
@@ -48,8 +47,8 @@ function playRound (playerSelection, computerSelection)
 {
     let roundResult = '';
 
-    if (roundCounter < 5){
-       if (playerSelection === computerSelection) {
+    if (playerScore < 5 && computerScore < 5) {
+        if (playerSelection === computerSelection) {
             roundResult = 'Draw!';
         }
         else if (playerSelection === 'Rock' && computerSelection === 'Paper' || 
@@ -62,23 +61,7 @@ function playRound (playerSelection, computerSelection)
             roundResult = `You win! ${playerSelection} beats ${computerSelection}`;
             playerScore++;
         }
-        roundCounter++;
-
         updateUI (roundResult, playerScore, computerScore);
-    } else {
-        if (playerScore === computerScore) {
-            roundResult = 'It\s A Draw!';
-        }
-        else if (playerScore < computerScore) {
-            roundResult = 'You Lose!';
-        }
-        else {
-            roundResult = 'You Win!';
-        }
-        updateUI(roundResult, playerScore, computerScore);
-        if (!resetButtonPresent) {
-            reset();
-        }
     }
 }
 
@@ -86,6 +69,23 @@ function updateUI (roundResult, playerScore, computerScore) {
     playerScoreDisplay.textContent = playerScore.toString();
     computerScoreDisplay.textContent = computerScore.toString();
     resultDisplay.textContent = roundResult;
+    if (playerScore === 5 || computerScore === 5) {
+       winner(playerScore, computerScore); 
+    }
+    
+}
+
+function winner (playerScore, computerScore) {
+
+    if (playerScore < computerScore) {
+        roundResult = 'You Lose!';
+    }
+    else {
+        roundResult = 'You Win!';
+    }
+    if (!resetButtonPresent) {
+        reset();
+    }
 }
 
 function reset () {
@@ -97,7 +97,6 @@ function reset () {
     resultContainer.appendChild(resetButton);
 
     resetButton.addEventListener('click', function () {
-        console.log('in reset');
         playerScore = 0;
         computerScore = 0;
         roundCounter = 0;
@@ -105,5 +104,5 @@ function reset () {
         updateUI(roundResult, playerScore, computerScore);
         resetButtonPresent = false;
         resultContainer.removeChild(resetButton);
-    }, {once : true});
+    });
 }

@@ -1,4 +1,4 @@
-// Written on May 19 2022 by Joaomateus Dos Santos
+// Written on May 2022 by Joaomateus Dos Santos
 
 //Picks either rock paper or scissors based the random method.
 
@@ -50,7 +50,7 @@ function playRound (playerSelection, computerSelection)
     if (playerScore < 5 && computerScore < 5) {
         if (playerSelection === computerSelection) {
             roundResult = 'Draw!';
-        }
+        } 
         else if (playerSelection === 'Rock' && computerSelection === 'Paper' || 
                  playerSelection === 'Paper' && computerSelection === 'Scissors' ||
                  playerSelection === 'Scissors' && computerSelection === 'Rock') {
@@ -79,10 +79,12 @@ function winner (playerScore, computerScore) {
 
     if (playerScore < computerScore) {
         roundResult = 'You Lose!';
-    }
+    } 
     else {
         roundResult = 'You Win!';
     }
+    resultDisplay.textContent = roundResult;
+
     if (!resetButtonPresent) {
         reset();
     }

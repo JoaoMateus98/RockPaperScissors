@@ -1,0 +1,64 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+
+    flex-wrap: wrap;
+}
+
+.pick-button {
+    font-size: 32px;
+    border: 1px solid rgb(97, 182, 252);
+    background-color: rgb(97, 182, 252);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.score-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.score {
+    display: flex;
+    gap: 32px;
+}
+
+.player-container, .computer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    font-size: 32px;
+}
+
+.result-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    font-size: 32px;
+    font-weight: bold;
+
+}
+
+.result-display {
+    margin: 0;
+    padding: 0;
+}

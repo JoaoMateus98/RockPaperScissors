@@ -1,6 +1,26 @@
 // Written on May 19 2022 by Joaomateus Dos Santos
 
 //Picks either rock paper or scissors based the random method.
+
+const playerScoreDisplay = document.querySelector('.player-score');
+const computerScoreDisplay = document.querySelector('.computer-score');
+const resultContainer = document.querySelector('.result-container');
+const resultDisplay = document.querySelector('.result-display');
+const buttons = document.querySelectorAll('.button-container');
+
+let roundCounter = 0;
+let playerScore = 0;
+let computerScore = 0;
+let resetButtonPresent = false;
+
+buttons.forEach((button) => button.addEventListener('click', getPlayerSelection));
+
+function getPlayerSelection (event) {
+    const playerSelection = event.srcElement.id;
+    const computerSelection = computerPlay();
+    playRound(playerSelection, computerSelection);
+}
+
 function computerPlay () 
 {
     let pick = '';
@@ -23,81 +43,67 @@ function computerPlay ()
     return pick;
 }
 
-// gets the players input. Checks if its valid. Returns the string with the first letter capitalized.
-function getPlayerInput () 
-{
-    let word = prompt('Please enter rock, paper, or scissors').toLowerCase();
-
-    while (word != 'rock' && word != 'paper' && word != 'scissors') 
-    {
-        console.log(`${word} is an invalid input.`);
-        word = prompt('Please enter rock, paper, or scissors').toLowerCase();
-    }
-
-    return word.charAt(0).toUpperCase() + word.slice(1);
-}
-
 // compares the computerSelection and playerSelection to see who wins
-function playRound (computerSelection) 
+function playRound (playerSelection, computerSelection) 
 {
-    let playerSelection = getPlayerInput();
+    let roundResult = '';
 
-    if (playerSelection === computerSelection)
-    {
-        console.log('Draw!')
-        return 0;
-    }
-    else if (playerSelection === 'Rock' && computerSelection === 'Paper' || 
-             playerSelection === 'Paper' && computerSelection === 'Scissors' ||
-             playerSelection === 'Scissors' && computerSelection === 'Rock') 
-    {
-        console.log(`You lose! ${computerSelection} beats ${playerSelection}`);
-        return 1;
-    } 
-    else 
-    {
-        console.log(`You win! ${playerSelection} beats ${computerSelection}`);
-        return 2;
-    }
-}
-
-// calls playRound function 5 times and uses the its return value to update the game score.
-function game () 
-{
-    let playerScore = 0;
-    let computerScore = 0;
-
-    for (let i = 0; i < 5; i++) 
-    {
-        let currentWinner = playRound(computerPlay());
-
-        switch (currentWinner) 
-        {
-            case 1:
-                computerScore += 1;
-                break;
-            case 2:
-                playerScore += 1;
-                break;
-            default:
-                break;
+    if (roundCounter < 5){
+       if (playerSelection === computerSelection) {
+            roundResult = 'Draw!';
         }
+        else if (playerSelection === 'Rock' && computerSelection === 'Paper' || 
+                 playerSelection === 'Paper' && computerSelection === 'Scissors' ||
+                 playerSelection === 'Scissors' && computerSelection === 'Rock') {
+            roundResult = `You lose! ${computerSelection} beats ${playerSelection}`;
+            computerScore++;
+        } 
+        else {
+            roundResult = `You win! ${playerSelection} beats ${computerSelection}`;
+            playerScore++;
+        }
+        roundCounter++;
 
-        console.log(`You have ${playerScore} points and the computer has ${computerScore}`);
-    }
-
-    if (playerScore > computerScore) 
-    {
-        console.log('You\'re the winner!');
-    }
-    else if (playerScore < computerScore)
-    {
-        console.log('You lose!');
-    }
-    else 
-    {
-        console.log('It\'s a draw');
+        updateUI (roundResult, playerScore, computerScore);
+    } else {
+        if (playerScore === computerScore) {
+            roundResult = 'It\s A Draw!';
+        }
+        else if (playerScore < computerScore) {
+            roundResult = 'You Lose!';
+        }
+        else {
+            roundResult = 'You Win!';
+        }
+        updateUI(roundResult, playerScore, computerScore);
+        if (!resetButtonPresent) {
+            reset();
+        }
     }
 }
 
-game();
+function updateUI (roundResult, playerScore, computerScore) {
+    playerScoreDisplay.textContent = playerScore.toString();
+    computerScoreDisplay.textContent = computerScore.toString();
+    resultDisplay.textContent = roundResult;
+}
+
+function reset () {
+    resetButtonPresent = true;
+    const resetButton = document.createElement('button'); 
+    
+    resetButton.setAttribute('style', 'font-size: 32px; border: 1px solid rgb(160, 243, 65); background-color: rgb(160, 243, 65); border-radius: 8px; cursor: pointer;');
+    resetButton.textContent = 'Play Again?';
+    resultContainer.appendChild(resetButton);
+
+    resetButton.addEventListener('click', function () {
+        console.log('in reset');
+        playerScore = 0;
+        computerScore = 0;
+        roundCounter = 0;
+        roundResult = 'Press one of the buttons to play:';
+        updateUI(roundResult, playerScore, computerScore);
+        resetButtonPresent = false;
+        resultContainer.removeChild(resetButton);
+    }, {once : true});
+}

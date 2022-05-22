@@ -49,7 +49,7 @@ function playRound (playerSelection, computerSelection)
 
     if (playerScore < 5 && computerScore < 5) {
         if (playerSelection === computerSelection) {
-            roundResult = 'Draw!';
+            roundResult = `Draw! ${playerSelection} ties ${computerSelection}`;
         } 
         else if (playerSelection === 'Rock' && computerSelection === 'Paper' || 
                  playerSelection === 'Paper' && computerSelection === 'Scissors' ||
